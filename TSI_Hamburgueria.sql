@@ -80,18 +80,124 @@ CREATE TABLE pagamentos (
 INSERT INTO
     clientes (id_clientes, nome, telefone)
 VALUES
-    (1, 'augusto silva', '(84) 99699-9967'),
-    (2, 'jose santos', '(84) 94699-5567'),
-    (3, 'maria souza', '(84) 94680-3517'),
+    (1, 'augusto', '(84) 99699-9967'),
+    (2, 'jose', '(84) 94699-5567'),
+    (3, 'maria', '(84) 94680-3517'),
     (4, 'fernando', '(84) 97699-7767'),
     (5, 'geovana', '(84) 93699-3567'),
     (6, 'pedro', '(84) 94680-2515'),
-    (7, 'carlos santos', '(84) 97987-1767'),
-    (8, 'silva melo', '(84) 93619-3588'),
-    (9, 'mendes neto', '(84) 94651-2010'),
+    (7, 'carlos', '(84) 97987-1767'),
+    (8, 'silva', '(84) 93619-3588'),
+    (9, 'mendes', '(84) 94651-2010'),
     (10, 'francisca', '(84) 98560-3215');
 
+    INSERT INTO
+    ingredientes (id_ingredientes,nome,quantidade_estoque,validade)
+VALUES
+    (1, 'Pão de hambúrguer', 100, '2026-12-31'),
+    (2, 'Carne bovina', 50, '2026-12-18'),
+    (3, 'Queijo cheddar', 30, '2026-11-15'),
+    (4, 'Alface', 20, '2026-11-10'),
+    (5, 'Tomate', 25, '2026-12-20'),
+    (6, 'Cebola', 15, '2026-12-05'),
+    (7, 'Bacon', 40, '2026-11-28'),
+    (8, 'Leite', 60, '2026-12-01'),
+    (9, 'Chocolate', 35, '2026-11-15'),
+    (10, 'Ovo', 20, '2026-12-30'),
+    (11, 'Batata', 55, '2026-12-04'),
+    (12, 'Laranja', 41, '2026-11-05');
 
+INSERT INTO
+    itens_do_pedido (id_item,id_pedidos,id_produtos,quantidade,preco_unitario)
+VALUES
+    (1, 1, 4, 2, 15.20),
+    (2, 1, 10, 1, 13.00),
+    (3, 2, 2, 1, 15.00),
+    (4, 2, 1, 2, 8.00),
+    (5, 3, 10, 1, 13.00),
+    (6, 3, 9, 1, 10.50),
+    (7, 3, 1, 3, 8.00),
+    (8, 4, 10, 1, 13.00),
+    (9, 5, 7, 2, 15.00),
+    (10, 6, 4, 3, 15.20),
+    (11, 6, 3, 1, 5.00),
+    (12, 7, 1, 1, 8.00),
+    (13, 7, 9, 2, 10.50),
+    (14, 8, 7, 1, 15.00),
+    (15, 8, 10, 2, 13.00),
+    (16, 9, 8, 2, 8.49),
+    (17, 9, 3, 1, 5.00),
+    (18, 10, 1, 2, 8.00);
+
+INSERT INTO pagamentos (id_pagamentos, id_pedidos, forma_pagamento, status_pagamento, data_pagamento, valor_pago)
+ VALUES
+(1,  1,  'Pix',               'Pago',     '2026-10-26 19:15:00', 43.40),
+(2,  2,  'Dinheiro',          'Pendente', '2026-10-27 12:35:00', 31.00),
+(3,  3,  'Cartão de crédito', 'Pago',     '2026-10-27 13:10:00', 47.50),
+(4,  4,  'Pix',               'Pendente', '2026-10-27 14:05:00', 13.00),
+(5,  5,  'Cartão de débito',  'Pago',     '2026-10-26 20:20:00', 30.00),
+(6,  6,  'Pix',               'Pago',     '2026-10-28 18:50:00', 50.60),
+(7,  7,  'Cartão de débito',  'Pendente', '2026-10-28 19:25:00', 29.00),
+(8,  8,  'Dinheiro',          'Pendente', '2026-10-27 11:20:00', 41.00),
+(9,  9,  'Pix',               'Pendente', '2026-10-27 12:45:00', 21.98),
+(10, 10, 'Cartão de crédito', 'Pago',     '2026-10-27 13:35:00', 16.00);
+
+
+INSERT INTO pedidos (id_pedidos, id_clientes, status, data_pedidos, tipo_de_entrega)
+ VALUES
+(1,  1,  'Entregue',         '2026-10-26 19:10:00', 'Entrega'),
+(2,  3,  'Em preparo',       '2026-10-27 12:30:00', 'Retirada'),
+(3,  5,  'Saiu para entrega','2026-10-27 13:05:00', 'Entrega'),
+(4,  2,  'Pendente',         '2026-10-27 14:00:00', 'Retirada'),
+(5,  7,  'Entregue',         '2026-10-26 20:15:00', 'Entrega'),
+(6,  4,  'Entregue',         '2026-10-28 18:45:00', 'Entrega'),
+(7,  6,  'Em preparo',       '2026-10-28 19:20:00', 'Retirada'),
+(8,  8,  'Saiu para entrega','2026-10-26 11:15:00', 'Entrega'),
+(9,  9,  'Pendente',         '2026-10-26 12:40:00', 'Retirada'),
+(10, 10, 'Entregue',         '2026-10-26 13:30:00', 'Entrega');
+
+INSERT INTO produto_ingrediente (id_produtos, id_ingredientes, quantidade_utilizada)
+ VALUES
+(1,  1,  1),
+(1,  2,  1),
+(1,  4,  1),
+(1,  5,  1),
+(2,  11, 10),
+(4,  1,  1),
+(4,  2,  1),
+(4,  3,  3),
+(5,  12, 3),
+(6,  9,  2),
+(6,  10, 3),
+(6,  8,  1),
+(7,  1,  1),
+(7,  2,  2),
+(7,  3,  1),
+(7,  7,  2),
+(7,  4,  1),
+(7,  5,  1),
+(7,  6,  1),
+(8,  1,  1),
+(8,  2,  2),
+(8,  7,  1),
+(8,  5,  2),
+(8,  6,  1),
+(10, 8,  2),
+(10, 9,  4);
+
+INSERT INTO
+    produtos (id_produtos, nome, preco, categoria, disponivel)
+VALUES
+    (1, 'X-salada', 8.00, 'Hambúrguer', 1),
+    (2, 'Batata Frita', 7.00, 'Acompanhamento', 0),
+    (3, 'Refrigerante Lata', 5.00, 'Bebida', 1),
+    (4, 'X-Cheddar', 15.20, 'Hambúrguer', 1),
+    (5, 'Suco Laranja', 5.00, 'Bebida', 0),
+    (6, 'Brownies', 20.00, 'Sobremesa', 0),
+    (7, 'X-King', 15.00, 'Hambúrguer', 1),
+    (8, 'Xelita-Burger', 8.49, 'Hambúrguer', 1),
+    (9, 'Guaraná Antarctica', 10.50, 'Bebida', 1),
+    (10, 'MilkShake', 13.00, 'Sobremesa', 1);
 
 
 
