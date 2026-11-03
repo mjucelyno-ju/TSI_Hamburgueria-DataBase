@@ -13,8 +13,6 @@ CREATE TABLE pedidos (
     id_clientes INT NOT NULL,
     status VARCHAR(30) NOT NULL
         CHECK (status IN ('Pendente', 'Em preparo', 'Saiu para entrega', 'Entregue', 'Cancelado')),
-    valor_total DECIMAL(10,2) NOT NULL
-        CHECK (valor_total >= 0),
     data_pedidos TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tipo_de_entrega VARCHAR(30) NOT NULL
         CHECK (tipo_de_entrega IN ('Entrega', 'Retirada')),
@@ -30,8 +28,6 @@ CREATE TABLE itens_do_pedido (
         CHECK (quantidade > 0),
     preco_unitario DECIMAL(10,2) NOT NULL
         CHECK (preco_unitario >= 0),
-    subtotal DECIMAL(10,2) NOT NULL
-        CHECK (subtotal >= 0),
     FOREIGN KEY (id_pedidos) REFERENCES pedidos(id_pedidos),
     FOREIGN KEY (id_produtos) REFERENCES produtos(id_produtos)
 );
@@ -112,7 +108,7 @@ INSERT INTO
 VALUES
     (1, 1, 4, 2, 15.20),
     (2, 1, 10, 1, 13.00),
-    (3, 2, 2, 1, 15.00),
+    (3, 2, 7, 1, 15.00),
     (4, 2, 1, 2, 8.00),
     (5, 3, 10, 1, 13.00),
     (6, 3, 9, 1, 10.50),
@@ -199,6 +195,43 @@ VALUES
     (9, 'Guaraná Antarctica', 10.50, 'Bebida', 1),
     (10, 'MilkShake', 13.00, 'Sobremesa', 1);
 
+INSERT INTO clientes (id_clientes,nome,telefone)
+VALUES
+(11,'henrique','(84) 96820-3417'),
+(12,'yago','(84) 96514-3018');
 
 
+UPDATE clientes SET nome='Augusto' 
+WHERE id_clientes=1;
+
+UPDATE clientes SET nome='Jose' 
+WHERE id_clientes=2;
+
+UPDATE clientes SET nome='Maria' 
+WHERE id_clientes=3;
+
+UPDATE clientes SET nome='Fernando' 
+WHERE id_clientes=4;
+
+UPDATE clientes SET nome='Geovana' 
+WHERE id_clientes=5;
+
+UPDATE clientes SET nome='Pedro' 
+WHERE id_clientes=6;
+
+UPDATE clientes SET nome='Carlos' 
+WHERE id_clientes=7;
+
+UPDATE clientes SET nome='Silva' 
+WHERE id_clientes=8;
+
+UPDATE clientes SET nome='Mendes' 
+WHERE id_clientes=9;
+
+UPDATE clientes SET nome='Francisca' 
+WHERE id_clientes=10;
+
+DELETE FROM clientes WHERE id_clientes=12;
+
+DELETE FROM clientes WHERE id_clientes=11;
 
