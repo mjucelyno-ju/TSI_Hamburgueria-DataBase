@@ -1,6 +1,5 @@
--- database: :memory:
 
--- codigos utilizandos na criaçao do banco de dados da hamburgueria.
+-- codigos utilizandos na criaçao das tabelas do banco de dados da Hamburgueria:
 
 CREATE TABLE clientes (
     id_clientes INT PRIMARY KEY,
@@ -72,7 +71,17 @@ CREATE TABLE pagamentos (
         CHECK (valor_pago > 0),
     FOREIGN KEY (id_pedidos) REFERENCES pedidos(id_pedidos)
 );
+--codigo utilizado na criaçao do views pedidos_com_total,
+-- que calcula o valor total de cada pedido com base nos itens do pedido e seus preços unitários:
 
+CREATE VIEW pedidos_com_total AS
+SELECT p.id_pedidos, p.id_clientes, p.status, p.data_pedidos, p.tipo_de_entrega,
+       ROUND(COALESCE(SUM(i.quantidade * i.preco_unitario), 0), 2) AS valor_total
+FROM pedidos p
+LEFT JOIN itens_do_pedido i ON i.id_pedidos = p.id_pedidos
+GROUP BY p.id_pedidos;
+
+--codigos utilizados para inserir  os dados nas tabelas:
 INSERT INTO
     clientes (id_clientes, nome, telefone)
 VALUES
@@ -87,7 +96,7 @@ VALUES
     (9, 'mendes', '(84) 94651-2010'),
     (10, 'francisca', '(84) 98560-3215');
 
-    INSERT INTO
+INSERT INTO
     ingredientes (id_ingredientes,nome,quantidade_estoque,validade)
 VALUES
     (1, 'Pão de hambúrguer', 100, '2026-12-31'),
@@ -200,7 +209,8 @@ VALUES
 (11,'henrique','(84) 96820-3417'),
 (12,'yago','(84) 96514-3018');
 
-
+--codigos utilizados para atualizar os dados na tabela clientes,
+-- para colocar os nomes dos clientes com a primeira letra maiúscula e o restante em minúsculo:
 UPDATE clientes SET nome='Augusto' 
 WHERE id_clientes=1;
 
@@ -230,8 +240,81 @@ WHERE id_clientes=9;
 
 UPDATE clientes SET nome='Francisca' 
 WHERE id_clientes=10;
-
+ --codigos utilizados para deletar os dados na tabela clientes, para remover os clientes com id_clientes 11 e 12:
 DELETE FROM clientes WHERE id_clientes=12;
 
 DELETE FROM clientes WHERE id_clientes=11;
+
+--codigos utilizados para consultar os dados nas tabelas do banco de dados:
+
+--produtos disponíveis,por categoria e preço:
+SELECT categoria, nome, preco
+FROM produtos
+WHERE disponivel = 1
+ORDER BY categoria, preco DESC;
+
+--Pedidos em andamento (fila da cozinha):
+SELECT p.id_pedidos, c.nome, p.status, p.data_pedidos
+FROM pedidos p
+JOIN clientes c USING (id_clientes)
+WHERE p.status IN ('Pendente', 'Em preparo', 'Saiu para entrega')
+ORDER BY p.data_pedidos;
+
+--Pedidos com nome do cliente e valor total
+SELECT p.id_pedidos, c.nome AS cliente, p.status, p.tipo_de_entrega, t.valor_total
+FROM pedidos p
+JOIN clientes c         ON c.id_clientes = p.id_clientes
+JOIN pedidos_com_total t ON t.id_pedidos = p.id_pedidos
+ORDER BY t.valor_total ASC;
+
+--Ingredientes de cada produto:
+SELECT pr.nome AS produto, GROUP_CONCAT(ing.nome, ', ') AS ingredientes
+FROM produtos pr
+JOIN produto_ingrediente pi USING (id_produtos)
+JOIN ingredientes ing       USING (id_ingredientes)
+GROUP BY pr.id_produtos
+ORDER BY pr.nome;
+
+--Pedidos entregues com pagamento  confirmado
+SELECT p.id_pedidos, c.nome, pg.status_pagamento
+FROM pedidos p
+JOIN clientes c    USING (id_clientes)
+JOIN pagamentos pg USING (id_pedidos)
+WHERE p.status = 'Entregue' AND pg.status_pagamento == 'Pago';
+
+--Faturamento total por status de pagamento
+SELECT status_pagamento, COUNT(*) AS qtd, ROUND(SUM(valor_pago), 2) AS total
+FROM pagamentos
+GROUP BY status_pagamento;
+
+--Produtos que nunca foram vendidos:
+SELECT nome, categoria
+FROM produtos
+WHERE id_produtos NOT IN (SELECT id_produtos FROM itens_do_pedido);
+
+--Produtos mais vendidos:
+SELECT pr.nome,
+       SUM(i.quantidade) AS unidades,
+       ROUND(SUM(i.quantidade * i.preco_unitario), 2) AS receita
+FROM itens_do_pedido i
+JOIN produtos pr ON pr.id_produtos = i.id_produtos
+GROUP BY pr.id_produtos
+ORDER BY unidades DESC, receita DESC;
+
+--Gasto total por cliente:
+SELECT c.nome,
+       COUNT(DISTINCT p.id_pedidos) AS pedidos,
+       ROUND(COALESCE(SUM(i.quantidade * i.preco_unitario), 0), 2) AS total_gasto
+FROM clientes c
+JOIN pedidos p               ON p.id_clientes = c.id_clientes
+LEFT JOIN itens_do_pedido i  ON i.id_pedidos = p.id_pedidos
+GROUP BY c.id_clientes
+ORDER BY total_gasto DESC;
+
+--Pedidos com mais de um item distinto:
+SELECT id_pedidos, COUNT(*) AS itens_distintos, SUM(quantidade) AS unidades
+FROM itens_do_pedido
+GROUP BY id_pedidos
+HAVING COUNT(*) > 1
+ORDER BY unidades DESC;
 
