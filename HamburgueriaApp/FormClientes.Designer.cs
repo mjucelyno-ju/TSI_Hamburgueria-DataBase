@@ -45,14 +45,14 @@
             // dgvDados
             // 
             this.dgvDados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDados.Location = new System.Drawing.Point(265, 248);
+            this.dgvDados.Location = new System.Drawing.Point(140, 248);
             this.dgvDados.Name = "dgvDados";
-            this.dgvDados.Size = new System.Drawing.Size(357, 190);
+            this.dgvDados.Size = new System.Drawing.Size(536, 190);
             this.dgvDados.TabIndex = 0;
             // 
             // btnCarregar
             // 
-            this.btnCarregar.Location = new System.Drawing.Point(405, 202);
+            this.btnCarregar.Location = new System.Drawing.Point(417, 198);
             this.btnCarregar.Name = "btnCarregar";
             this.btnCarregar.Size = new System.Drawing.Size(75, 23);
             this.btnCarregar.TabIndex = 1;
@@ -130,7 +130,7 @@
             // cmbTabelas
             // 
             this.cmbTabelas.FormattingEnabled = true;
-            this.cmbTabelas.Location = new System.Drawing.Point(346, 139);
+            this.cmbTabelas.Location = new System.Drawing.Point(385, 135);
             this.cmbTabelas.Name = "cmbTabelas";
             this.cmbTabelas.Size = new System.Drawing.Size(121, 21);
             this.cmbTabelas.TabIndex = 3;
