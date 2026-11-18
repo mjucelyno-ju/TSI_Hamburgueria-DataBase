@@ -11,9 +11,9 @@ using Npgsql;
 
 namespace HamburgueriaApp
 {
-    public partial class Form1 : Form
+    public partial class FormClientes : Form
     {
-        public Form1()
+        public FormClientes()
         {
             InitializeComponent();
         }
@@ -32,6 +32,15 @@ namespace HamburgueriaApp
                         var tabela = new DataTable();
                         da.Fill(tabela);
                         dgvDados.DataSource = tabela;
+
+                        if (tabela.Rows.Count == 0)
+                        {
+                            MessageBox.Show("Nenhum cliente encontrado!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Dados carregados com sucesso!");
+                        }
                     }
                 }
             }
